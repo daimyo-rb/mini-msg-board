@@ -11,19 +11,20 @@ CREATE TABLE IF NOT EXISTS messages (
 );
 
 INSERT INTO messages (message, username, added)
+SELECT * FROM (
 VALUES
   ('Hi there!', 'Amando', now()),
   ('Hello World!', 'Charles', now())
-;`;
+) AS v(message, username, added)
+ WHERE NOT EXISTS (
+  SELECT 1 FROM messages
+ );
+ `;
 
 async function main() {
   console.log("seeding...");
   const client = new Client({
-    host: process.env.DATABASE_HOST, // or wherever the db is hosted
-    user: process.env.DATABASE_USER,
-    database: process.env.DATABASE_NAME,
-    password: process.env.DATABASE_PASSWORD,
-    port: process.env.DATABASE_PORT // The default port
+    connectionString: process.env.DATABASE_URL
   });
   await client.connect();
   await client.query(SQL);
