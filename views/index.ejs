@@ -1,5 +1,10 @@
 <h1><%= title %></h1>
 <% messages.forEach((msg) => { %>
-  <li><%= msg.text %></li>
+  <li><%= msg.text %>
+    <a href="/messages/<%= msg.id %>">
+      <button>More Details</button>
+    </a>
+  </li>
 <% }); %>
+<br>
 <a href='/new'><button>Create new message</button></a>
